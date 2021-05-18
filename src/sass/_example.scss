@@ -1,8 +1,7 @@
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
-    'Open Sans', 'Helvetica Neue', sans-serif;
   line-height: 1.5;
-  background-color: #cde3f1;
+  color: #ffffff;
+  background: linear-gradient(to left, #a7bfe8, #6190e8);
 }
 
 h1,
@@ -31,9 +30,13 @@ img {
 .search-country {
   display: block;
   margin: 0 auto 50px;
-  height: 40px;
+  height: 50px;
   width: 500px;
-  padding: 2px 0px 2px 10px;
+  padding: 2px 0px 2px 20px;
+
+  font-size: 24px;
+  font-weight: 500;
+  color: rgba(80, 80, 80, 0.993);
 
   border: none;
   border-bottom: 2px solid rgba(80, 80, 80, 0.993);
@@ -41,11 +44,12 @@ img {
 
   &::placeholder {
     font-weight: 500;
+
     color: rgba(92, 92, 92, 0.658);
   }
   &:focus {
     outline: none;
-    box-shadow: 0.2rem 0.6rem 1rem #a1d5ffd8;
+    box-shadow: 0.2rem 0.6rem 1rem #486eb4;
   }
 }
 
@@ -59,16 +63,20 @@ img {
   margin-bottom: 20px;
   font-size: 60px;
   text-align: center;
+
+  text-shadow: 2px 4px 2px #5072b3;
 }
 
 .country-item {
   display: flex;
   list-style: none;
-  font-size: 18px;
+  font-size: 25px;
   font-weight: 500;
+  text-shadow: 2px 4px 5px #5072b3;
+  cursor: pointer;
 
   &:not(:last-child) {
-    margin-bottom: 10px;
+    margin-bottom: 25px;
   }
   & img {
     margin-right: 10px;
@@ -79,6 +87,7 @@ img {
   display: flex;
   justify-content: center;
   align-items: center;
+  text-shadow: 1px 2px 3px #5072b3;
 
   .country-data-list {
     margin: 0;
@@ -99,4 +108,8 @@ img {
 
 .flag {
   width: 400px;
+}
+
+.bold {
+  text-shadow: 2px 4px 5px #5072b3;
 }

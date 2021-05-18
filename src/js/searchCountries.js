@@ -1,7 +1,6 @@
 import countryTpl from '../templates/country.hbs';
 import countryListTpl from '../templates/countriesList.hbs';
-
-import notices from './pnotify';
+import notices from './pnotify-lib';
 
 var debounce = require('lodash.debounce');
 
@@ -12,10 +11,11 @@ const refs = {
   countryDiv: document.querySelector('.country-description'),
 };
 
-refs.input.addEventListener('input', debounce(onSearchCountry, 500));
+refs.input.addEventListener('input', debounce(onSearchCountry, 800));
+refs.countriesList.addEventListener('click', addCountryNameToInput);
 
 function onSearchCountry(e) {
-  fetchCountry(e).then(data => {
+  fetchCountry(e).then((data) => {
     if (data.length === 1) {
       makeCountry(data);
     }
@@ -31,12 +31,14 @@ function onSearchCountry(e) {
 }
 
 function fetchCountry(e) {
-  return fetch(`https://restcountries.eu/rest/v2/name/${e.target.value}`).then(response => {
-    if (response.ok) {
-      return response.json();
-    }
-    throw new Error('', notices.errorEmptyInput());
-  });
+  return fetch(`https://restcountries.eu/rest/v2/name/${e.target.value}`).then(
+    (response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error('', notices.errorEmptyInput());
+    },
+  );
 }
 
 function makeCountriesList(data) {
@@ -50,4 +52,23 @@ function makeCountry(data) {
 function resetInput() {
   refs.countriesList.innerHTML = '';
   refs.countryDiv.innerHTML = '';
+}
+
+function addCountryNameToInput(e) {
+  if (e.target.hasAttribute('data-action')) {
+    const text = (refs.input.value = e.target.textContent.trim());
+    console.log(text);
+    fetch(`https://restcountries.eu/rest/v2/name/${text}`)
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error('', notices.errorEmptyInput());
+      })
+      .then((data) => {
+        makeCountry(data);
+        console.log(data);
+      });
+    resetInput();
+  }
 }

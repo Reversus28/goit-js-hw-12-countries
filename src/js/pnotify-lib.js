@@ -3,6 +3,9 @@ import '@pnotify/core/dist/Material.css';
 
 import { alert, error, defaults, Stack } from '@pnotify/core';
 
+defaults.styling = 'material';
+defaults.icons = 'material';
+
 const myStack = new Stack({
   dir1: 'down',
   dir2: 'left',
@@ -14,18 +17,16 @@ const myStack = new Stack({
   context: document.body,
 });
 
-defaults.styling = 'material';
-defaults.icons = 'material';
-
 const notices = {
   errorEmptyInput() {
     error({
       title: 'Error',
       text: 'Enter country name',
       stack: myStack,
-      delay: 2000,
+      delay: 1000,
     });
   },
+
   alertTooManyMatches() {
     alert({
       title: 'Attention',
