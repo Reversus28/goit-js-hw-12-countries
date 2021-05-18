@@ -37,8 +37,9 @@ function onSearchCountry(e) {
 
 function addCountryOptionToInput(e) {
   if (e.target.hasAttribute('data-action')) {
-    refs.input.value = e.target.textContent.trim();
-    // newApiService.query = newQuery;
+    const newQuery = e.target.textContent.trim();
+    newApiService.query = newQuery;
+    refs.input.value = newQuery;
     newApiService.fetchArticleCountry().then(makeCountry);
 
     resetPage();
