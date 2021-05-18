@@ -1,6 +1,9 @@
 import countryTpl from '../templates/country.hbs';
 import countryListTpl from '../templates/countriesList.hbs';
 import notices from './pnotify-lib';
+import NewApiService from '../js/fetchCountries';
+
+const newApiService = new NewApiService();
 
 var debounce = require('lodash.debounce');
 
@@ -12,10 +15,11 @@ const refs = {
 };
 
 refs.input.addEventListener('input', debounce(onSearchCountry, 800));
-refs.countriesList.addEventListener('click', addCountryNameToInput);
+refs.countriesList.addEventListener('click', addCountryOptionToInput);
 
 function onSearchCountry(e) {
-  fetchCountry(e).then((data) => {
+  newApiService.query = e.target.value;
+  newApiService.fetchArticleCountry().then((data) => {
     if (data.length === 1) {
       makeCountry(data);
     }
@@ -27,18 +31,17 @@ function onSearchCountry(e) {
     }
   });
 
-  resetInput();
+  resetPage();
 }
 
-function fetchCountry(e) {
-  return fetch(`https://restcountries.eu/rest/v2/name/${e.target.value}`).then(
-    (response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      throw new Error('', notices.errorEmptyInput());
-    },
-  );
+function addCountryOptionToInput(e) {
+  if (e.target.hasAttribute('data-action')) {
+    const newQuery = e.target.textContent.trim();
+    newApiService.query = newQuery;
+    newApiService.fetchArticleCountry().then(makeCountry);
+
+    resetPage();
+  }
 }
 
 function makeCountriesList(data) {
@@ -49,26 +52,7 @@ function makeCountry(data) {
   refs.countryDiv.insertAdjacentHTML('beforeend', countryTpl(...data));
 }
 
-function resetInput() {
+function resetPage() {
   refs.countriesList.innerHTML = '';
   refs.countryDiv.innerHTML = '';
-}
-
-function addCountryNameToInput(e) {
-  if (e.target.hasAttribute('data-action')) {
-    const text = (refs.input.value = e.target.textContent.trim());
-    console.log(text);
-    fetch(`https://restcountries.eu/rest/v2/name/${text}`)
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
-        throw new Error('', notices.errorEmptyInput());
-      })
-      .then((data) => {
-        makeCountry(data);
-        console.log(data);
-      });
-    resetInput();
-  }
 }

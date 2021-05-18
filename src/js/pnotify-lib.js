@@ -30,7 +30,8 @@ const notices = {
   alertTooManyMatches() {
     alert({
       title: 'Attention',
-      text: 'Too many matches found. Please enter a more specific  query',
+      text:
+        'Please select the appropriate query or enter a more specific  query ',
       stack: myStack,
       delay: 2000,
     });
